@@ -1,63 +1,69 @@
 # MINI-PROJECT SHORT TECHNICAL REPORT
-**Course:** Cross-Platform Mobile App Development (VKU)
-**Mini-Project Title:** Mini-Project 1: Ứng dụng PWA Kiểm tra Cơ sở vật chất
-**Student Name:** Võ Thành Long
-**Submission Date:** 03/09/2026
+Course: Cross-Platform Mobile App Development 
+Mini-Project Title: Mini-Project 1 - Ứng dụng PWA Kiểm tra Cơ sở vật chất
+Student Name: Võ Thành Long
+Submission Date: 03/09/2026
 
 ---
 
 ## 1. GENERAL INFORMATION & DELIVERABLE LINKS
-* **Team Members:**
-  1. Võ Thành Long — Student ID: [Điền mã SV vào đây] — Role: Fullstack Developer — Contribution: 100%
-* **🔗 Live Demo URL:** https://vku-facility-inspection.pages.dev
-* **💻 GitHub Repository:** https://github.com/vothanhlong16072005-creator/vku-facility-inspection
-* **🎥 Video Demo (Optional):** [Link video nếu có]
+* Team Members:
+  1. Võ Thành Long — Student ID: 23IT147 — Role: Code toàn bộ ứng dụng — Contribution: 100%
+* Live Demo URL: https://vku-facility-inspection.pages.dev
+* GitHub Repository: https://github.com/vothanhlong16072005-creator/vku-facility-inspection
+* Link video demo: https://www.youtube.com/shorts/wvXHWzjUi0E?si=3lTqVhRNcNHOMLA5
 
 ---
 
 ## 2. FEATURE IMPLEMENTATION CHECKLIST
-| # | Required Feature | Status | Implementation Details & Acceptance Level |
-|:---:|---|:---:|---|
-| 1 | Industrial Mobile-first UI | ✅ Complete | Giao diện Single-page form cuộn dọc, tối ưu cho màn hình cảm ứng di động. Có trạng thái báo mạng (Online/Offline) rõ ràng. |
-| 2 | Local Offline Persistence | ✅ Complete | Sử dụng IndexedDB (thông qua idb wrapper) để lưu trữ phiếu kiểm tra và lưu nháp khi rớt mạng. |
-| 3 | Automatic Background Sync | ✅ Complete | Bắt sự kiện `window.ononline` để tự động đẩy dữ liệu đang chờ (Pending) lên Google Sheets ngay khi có mạng lại. |
-| 4 | PWA Installable | ✅ Complete | Cấu hình file `manifest.json` và Service Worker (Cache-First) để tải app tức thì và cho phép cài ra màn hình chính. |
+1. Giao diện Mobile-first
+    Giao diện một trang cuộn dọc để dễ bấm trên điện thoại. Ứng dụng tự nhận biết và hiển thị đang có mạng hay mất mạng.
+2. Lưu trữ dữ liệu Offline
+    Dùng IndexedDB lưu lại các phiếu kiểm tra xuống máy tính hoặc điện thoại khi không có mạng.
+3. Tự động đồng bộ nền
+    Code tự phát hiện khi nào có mạng lại thì sẽ lôi các phiếu chưa gửi ra và tự động đẩy lên Google Sheets.
+4. Cài đặt PWA
+    Đã cấu hình file manifest và Service Worker để người dùng có thể tải trang ngay lập tức và cài ra màn hình chính giống hệt app thật.
 
 ---
 
 ## 3. TECHNICAL ARCHITECTURE & PROJECT STRUCTURE
-Do đây là một ứng dụng web thuần (Vanilla JS) không dùng framework phức tạp, em chia project thành các file module riêng biệt để dễ quản lý:
-- `css/styles.css`: Chứa toàn bộ CSS, chia style theo thiết kế chuẩn công nghiệp.
-- `js/app.js`: File điều khiển chính, lấy dữ liệu từ form, kiểm tra lỗi và cập nhật UI.
-- `js/db.js`: File chuyên xử lý cơ sở dữ liệu nội bộ (IndexedDB), tạo 2 bảng là `inspections` (để lưu phiếu) và `draft` (để lưu nháp).
-- `js/sync.js`: Hàm chạy ngầm để lấy các phiếu chưa gửi (`PENDING_SYNC`) trong máy ra và đẩy lên server.
-- `js/api.js`: File chứa hàm Fetch API để gọi lên Google Apps Script.
-- `apps-script/Code.gs`: Đoạn code chạy trên Google Server để hứng dữ liệu và ghi vào Google Sheets.
 
-**Luồng dữ liệu (State Flow):**
-Người dùng nhập liệu -> Tự động lưu nháp mỗi 500ms -> Nhấn "Gửi" -> Lưu phiếu vào DB nội bộ (trạng thái chờ) -> Kiểm tra mạng -> Có mạng thì bắn lên Google Sheets -> Thành công thì chuyển trạng thái thành "Đã đồng bộ". 
+Vì đây là dự án web thuần không dùng framework nên em chia ra các file nhỏ cho dễ sửa lỗi:
+- File css/styles.css chứa code làm đẹp giao diện.
+- File js/app.js để xử lý các nút bấm và lấy dữ liệu người dùng nhập.
+- File js/db.js chuyên làm việc với database nội bộ IndexedDB.
+- File js/sync.js là đoạn code chạy ngầm để gom dữ liệu đẩy lên mạng.
+- File js/api.js chứa hàm fetch để gửi dữ liệu đi.
+- File Code.gs nằm bên Google Apps Script để nhận dữ liệu và ghi vào file Excel.
+
+Luồng dữ liệu: Bất kỳ thay đổi nào trên giao diện nhập liệu đều được bắt sự kiện và lưu trữ tạm thời thông qua cơ chế Debounce. Khi thực hiện thao tác nộp phiếu, hệ thống sẽ đánh giá trạng thái mạng hiện tại qua biến navigator.onLine. Nếu thiết bị đang trực tuyến, dữ liệu lập tức được gọi qua REST API đến Google Apps Script. Trong trường hợp ngoại tuyến, payload sẽ được đẩy vào hàng đợi của IndexedDB với trạng thái chờ. Ngay khi sự kiện ononline được kích hoạt, Background Sync Queue sẽ tự động xử lý hàng đợi và hoàn tất việc đồng bộ.
 
 ---
 
 ## 4. EMPIRICAL EVIDENCE & SCREENSHOTS
-*(Lưu ý: Bạn hãy chụp màn hình điện thoại hoặc máy tính rồi dán đè thay thế các dòng chữ bên dưới nhé)*
+![Màn hình trang chủ](./images/giaodien1.jpg)
 
-![Giao diện màn hình chính khi đang điền form](chèn-link-ảnh-vào-đây.jpg)
+![Màn hình khi mất mạng](./images/giaodien2.jpg)
 
-![Màn hình Lịch sử hiển thị các phiếu Đã đồng bộ và Chờ đồng bộ](chèn-link-ảnh-vào-đây.jpg)
+![Màn hình sync thành công](./images/giaodien3.jpg)
 
-![Giao diện lúc cài đặt PWA ra màn hình chính](chèn-link-ảnh-vào-đây.jpg)
+![Màn hình dữ liệu trên sheet](./images/data.jpg)
 
-![Dữ liệu đã nhảy lên Google Sheets](chèn-link-ảnh-vào-đây.jpg)
-
----
 
 ## 5. TECHNICAL CHALLENGES & RESOLUTIONS
-Trong quá trình làm bài, em có gặp 2 khó khăn chính và đã tìm cách giải quyết như sau:
+Khó khăn 1: Vi phạm chính sách bảo mật CORS của trình duyệt khi giao tiếp API
+Khi thực hiện POST request chứa JSON payload từ domain của ứng dụng sang endpoint của Google Script, trình duyệt đã chặn lại do vi phạm chính sách Cross-Origin Resource Sharing. 
+Giải pháp: Thiết kế lại kiến trúc gửi dữ liệu bằng cách sử dụng HTTP GET request kết hợp truyền tải qua chuỗi Query Parameters. Cùng với tham số cấu hình no-cors trong Fetch API, ứng dụng đã có thể vượt qua rào cản này để đẩy dữ liệu thành công.
 
-* **Vấn đề 1: Gọi API lên Google Sheets bị chặn lỗi CORS (Cross-Origin Resource Sharing).**
-  - Trình duyệt không cho phép gửi request dạng POST chứa JSON thẳng lên Google Script từ một domain khác. 
-  - **Cách giải quyết:** Em đã chuyển sang dùng method `GET`, gửi dữ liệu qua Query Parameters trên thanh URL, đồng thời thêm `mode: 'no-cors'` vào hàm `fetch()`. Tuy làm cách này không đọc được nội dung (body) mà Google trả về, nhưng dữ liệu vẫn được đẩy lên Google Sheets thành công.
+Khó khăn 2: Mất trạng thái cục bộ khi vòng đời trang web bị gián đoạn đột ngột
+Khi người dùng tải lại trang hoặc trình duyệt bị đóng băng, dữ liệu đang thao tác trong bộ nhớ RAM bị mất hoàn toàn. 
+Giải pháp: Xây dựng cơ chế Real-time Draft Persistence. Bằng cách kết hợp Event Listener với hàm Debounce nửa giây, toàn bộ State của form được ánh xạ liên tục xuống Storage nội bộ IndexedDB. Khi khởi tạo lại ứng dụng, hàm restore sẽ lấy lại chính xác trạng thái cuối cùng.
 
-* **Vấn đề 2: Người dùng đang gõ dài dòng mà lỡ tay load lại trang hoặc bấm nhầm thoát app thì bị mất trắng dữ liệu.**
-  - **Cách giải quyết:** Em làm thêm cơ chế Auto-save (Lưu nháp thời gian thực). Bắt sự kiện `input` trên các thẻ HTML, sử dụng kỹ thuật `Debounce` (đợi 500ms sau khi người dùng ngừng gõ) rồi mới ghi thẳng vào bảng `draft` của IndexedDB. Khi người dùng mở lại app, hệ thống sẽ tự động móc dữ liệu từ `draft` ra và điền lại vào form y như cũ.
+Khó khăn 3: Xung đột hiển thị Layout trên các Viewport di động kích thước hẹp
+Cấu trúc ban đầu sử dụng các đơn vị kích thước tuyệt đối gây ra hiện tượng tràn phần tử DOM trên thiết bị có độ phân giải thấp. 
+Giải pháp: Việc refactor lại toàn bộ Stylesheet đã được thực hiện bằng cách áp dụng Flexible Box Layout Model và Relative Units như phần trăm hoặc viewport width. CSS cũng được tối ưu lại để đảm bảo tính Responsive.
+
+Khó khăn 4: Cơ chế Cache Invalidation của Service Worker giữ lại tài nguyên cũ
+Mô hình Cache-First giúp tải trang cực nhanh nhưng lại dẫn đến việc trình duyệt luôn phục vụ tài nguyên cũ từ bộ nhớ đệm ngay cả khi Source Code trên máy chủ đã thay đổi.
+ Trong quá trình phát triển, cờ Update on reload trong DevTools được sử dụng. Khi triển khai Production, em áp dụng chiến lược Cache Versioning, thay đổi định danh bộ đệm mỗi lần phát hành để buộc Service Worker phải tải xuống bộ App Shell mới nhất.
