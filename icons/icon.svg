@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#0284c7"/>
+  <!-- Clipboard body -->
+  <rect x="140" y="120" width="232" height="288" rx="16" fill="white" opacity="0.95"/>
+  <!-- Clipboard clip -->
+  <rect x="208" y="100" width="96" height="48" rx="12" fill="#0369a1"/>
+  <rect x="224" y="108" width="64" height="32" rx="8" fill="#0284c7"/>
+  <!-- Check lines -->
+  <rect x="172" y="196" width="168" height="14" rx="7" fill="#e0f2fe"/>
+  <rect x="172" y="228" width="120" height="14" rx="7" fill="#e0f2fe"/>
+  <!-- Star rating row -->
+  <g transform="translate(163, 262)">
+    <text x="0" y="28" font-size="34" fill="#f59e0b" font-family="serif">★★★★★</text>
+  </g>
+  <!-- Checkmark circle -->
+  <circle cx="338" cy="330" r="44" fill="#0284c7"/>
+  <polyline points="318,330 333,346 360,316" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

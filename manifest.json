@@ -1,0 +1,37 @@
+{
+  "name": "Kiểm Tra Cơ Sở Vật Chất - VKU",
+  "short_name": "FacilityCheck",
+  "description": "Ứng dụng kiểm tra và khảo sát cơ sở vật chất thiết bị - hoạt động offline, đồng bộ lên Google Sheets",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0284c7",
+  "theme_color": "#0284c7",
+  "lang": "vi",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities", "education"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
