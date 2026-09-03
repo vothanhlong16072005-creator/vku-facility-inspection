@@ -44,6 +44,12 @@ Open `http://localhost:5500` in your browser.
 ### 2. Cloud Backend Setup (Google Sheets)
 The application syncs data to Google Sheets via Google Apps Script.
 
+> [!IMPORTANT]  
+> **Pre-configured API (No setup required):** The app is already configured out-of-the-box to use the following API link:  
+> `https://script.google.com/macros/s/AKfycbx7AKzzNtT19bm0-Q2beYb9RPAf3IldoLxy3np9XDun4TijAT9hJMk5515XC1f_iNG6/exec`  
+> You must use this endpoint for the app to run and sync correctly if you don't deploy your own.
+
+If you wish to deploy your own database, follow these steps:
 1. Create a new Google Spreadsheet.
 2. Open `Extensions -> Apps Script`.
 3. Copy the contents of `apps-script/Code.gs` and paste it into the editor.

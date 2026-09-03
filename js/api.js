@@ -7,7 +7,7 @@
  */
 
 // ── Default URL (replace after deploying Apps Script) ──
-const DEFAULT_API_URL = '';   // e.g. 'https://script.google.com/macros/s/YOUR_ID/exec'
+const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbx7AKzzNtT19bm0-Q2beYb9RPAf3IldoLxy3np9XDun4TijAT9hJMk5515XC1f_iNG6/exec';
 
 const API_CONFIG = {
   url:     localStorage.getItem('facilityApiUrl') || DEFAULT_API_URL,
