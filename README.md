@@ -2,7 +2,7 @@
 
 A Progressive Web Application (PWA) built for the **Mobile Cross-Platform** coursework. It is designed to assist staff in inspecting and evaluating campus facilities. The architecture is **Offline-First**, ensuring seamless data collection even without internet connectivity.
 
-## 🌟 Key Features
+##  Key Features
 
 *   **Offline-First & Sub-second Boot:** Utilizes a Service Worker with a Cache-First strategy for the App Shell. It works flawlessly in Airplane mode or dead zones.
 *   **PWA Installable:** Full `manifest.json` configuration for "Add to Home Screen" capability on iOS and Android. Runs as a standalone application.
@@ -11,7 +11,7 @@ A Progressive Web Application (PWA) built for the **Mobile Cross-Platform** cour
 *   **Background Auto-Sync:** A dedicated sync engine uses a FIFO queue to automatically push pending inspections to the cloud immediately when network connectivity is restored (`window.ononline`).
 *   **Industrial Mobile-first UI:** Single-page scrollable form optimized for touch interactions.
 
-## 🏗️ Modular Architecture
+##  Modular Architecture
 
 The project is structured into clear, decoupled modules:
 
@@ -31,7 +31,7 @@ The project is structured into clear, decoupled modules:
 └── manifest.json        # PWA configuration
 ```
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### 1. Local Development (Frontend)
 No build step is required. The app is built with Vanilla JS.
@@ -63,7 +63,7 @@ npx wrangler pages deploy .
 ```
 Follow the CLI prompts to create a new project. Access the provided `.pages.dev` link on your mobile device.
 
-## 📋 Grading Requirements Checklist
+##  Grading Requirements Checklist
 - [x] PWA Installable (manifest.json & icons)
 - [x] Offline-ready (Service Worker & Cache-First App Shell)
 - [x] Local Storage (IndexedDB)
